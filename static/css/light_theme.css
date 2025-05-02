@@ -1,0 +1,131 @@
+:root {
+    --background-color: #FFFDF6;
+    --text-color: #000A14;
+    --accent-color: #EAD2AC;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #073B4C;
+        --text-color: #17C3B2;
+        --accent-color: #EAD2AC;
+    }
+  }
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    margin-bottom: 50px;
+    background-color: var(--background-color);
+    transition: background-color 0.3s ease;
+}
+
+body.dark-theme {
+    --background-color: #073B4C;
+    --text-color: #17C3B2;
+    --accent-color: #EAD2AC;
+}
+
+body.light-theme {
+    --background-color: #FFFDF6;
+    --text-color: #000A14;
+    --accent-color: #EAD2AC;
+}
+
+.themeChangeBtn {
+    width: 35;
+    height: 35;
+}
+
+.light {
+    background-color: white;
+    color: white;
+}
+
+.dark {
+    background-color: #000A14;
+    color: #000A14;
+}
+
+.footer {
+    position: fixed; /* Подвал как приклеенный */
+    bottom: 0; /* Фиксация снизу */
+    left: 0; /* К началу слева */
+    right: 0; /* Без отступов справа */
+    height: 50px; /* Задаем высоту */
+    text-align: center;
+    background-color: var(--accent-color);
+}
+
+.container_bottom {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.content {
+    margin: 80px;
+    margin-left: 200px;
+    color: var(--text-color);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--accent-color);
+    padding: 14px 20px;
+}
+
+.navbar a {
+    color: #073B4C;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+.navbar a:hover {
+    background-color: #D72638;
+    color: #000A14;
+}
+
+.navbar .logo {
+    flex: 1;
+    margin-top: 10px;
+}
+
+.navbar .menu {
+    display: flex;
+}
+
+.navbar.responsive .menu {
+    display: block;
+}
+
+.navbar .icon {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    .navbar .icon {
+        display: block;
+        cursor: pointer;
+    }
+
+    .navbar .menu {
+        display: none;
+    }
+
+    .navbar.responsive .menu {
+        display: flex;
+        flex-direction: column;
+        background-color: var(--accent-color);
+        position: absolute;
+        top: 15%;
+        left: 0;
+        right: 0;
+    }
+
+    .navbar.responsive .menu a {
+        padding: 10px 20px;
+        /* text-align: center; */
+    }
+}
