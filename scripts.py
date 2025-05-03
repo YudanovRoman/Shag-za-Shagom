@@ -6,6 +6,7 @@ from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
 import math
+import sqlite3
 
 
 def get_coords(name):
@@ -82,9 +83,7 @@ class Route:
     def create_route(self):
         points = self.address_ll
         for i in range(len(self.type)):
-            print(points)
             org = get_organization_list(self.type[i], points, i + 1)
-            print(org)
             self.names_org.append(min(org, key=lambda x: x[1]))
             points = self.names_org[-1][3]
 
@@ -92,7 +91,7 @@ class Route:
         apikey = "f3a0fe3a-b07e-4840-a1da-06f18b2ddf13"
         map_params = {
             "apikey": apikey,
-            "pt": f"{"~".join([i[2] for i in self.names_org])}~{address_ll},round",
+            "pt": f"{"~".join([i[2] for i in self.names_org])}~{self.address_ll},round",
             #    "z": z
         }
 
@@ -100,12 +99,23 @@ class Route:
         response = requests.get(map_api_server, params=map_params)
         self.img = BytesIO(response.content)
         opened_image = Image.open(self.img)
-        opened_image.show()
+        opened_image.save("static/img/route.png")
+        # con = sqlite3.connect("static/sqLite3/Thumbs.db")
+        # cur = con.cursor()
+        # id = cur.execute("""SELECT id FROM routes""").fetchall()
+        # print(id[-1][0])
+        # cur.execute(f"""INSERT INTO routes(id, creator_id)""").fetchall()
+        # con.commit()
+        # con.close()
+        # #opened_image.show()
+        return "static/img/route.png"
+
+        # opened_image.save("example.png")
 
 
 # address_ll = get_coords(input("Страна, Город, Улица: "))
 address_ll = get_coords("Россия Липецк Свиридова 5")
-route = Route(["Парк Атракционов", "Кафе", "Парк"], "БАзовая прогулка", address_ll)
+route = Route(["Парк Атракционов", "Кафе", "Парк"], "Базовая прогулка", address_ll)
 route.create_img()
 
 
