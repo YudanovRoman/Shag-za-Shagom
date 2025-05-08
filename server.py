@@ -6,6 +6,7 @@ from wtforms.validators import DataRequired
 from http import cookies
 from datetime import time, datetime
 import scripts
+import sqlite3
 
 
 class LoginForm(FlaskForm):
@@ -71,10 +72,27 @@ def create_route():
         temp = 'Register'
     else:
         temp = 'Profile'
-    address_ll = scripts.get_coords("Россия Липецк Свиридова 5")
-    route = scripts.Route(["Кинотеатр", "Кафе", "Парк"], "БАзовая прогулка", address_ll)
+    address_ll = request.form["address"]
+    address_ll = scripts.get_coords(address_ll)
+    description = request.form["route"]
+    route = scripts.Route(description.split(","), "Бaзовая прогулка", address_ll)
     image = route.create_img()
-    res = make_response(render_template('title.html', title='Welcome', autorization=temp, image=image))
+    con = sqlite3.connect("static/sqLite3/Thumbs.db")
+    cur = con.cursor()
+    id_sql = cur.execute("SELECT * FROM routes").fetchall()[-1][0] + 1
+    print(id_sql)
+    image.save(f"static/routes/{id_sql}.png")
+    with open(f"static/routes/{id_sql}.png", 'rb') as file:
+        blob_data = file.read()
+    sqlite_insert_blob_query = """INSERT INTO routes
+                                      (id, creator_id, map, places_list, description) VALUES (?, ?, ?, ?, ?)"""
+    # Преобразование данных в формат кортежа
+    print(route.names_org)
+    data_tuple = (id_sql, account_id, blob_data, "->".join([i[0] for i in route.names_org]), "->".join(description.split(",")))
+    cur.execute(sqlite_insert_blob_query, data_tuple)
+    con.commit()
+    con.close()
+    res = make_response(render_template('title.html', title='Welcome', autorization=temp, image=f"static/routes/{id_sql}.png"))
     return res
 
 if __name__ == '__main__':

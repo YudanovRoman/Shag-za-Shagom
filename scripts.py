@@ -9,6 +9,7 @@ import math
 import sqlite3
 
 
+
 def get_coords(name):
     geocoder_request = f'http://geocode-maps.yandex.ru/1.x/?apikey=8013b162-6b42-4997-9691-77b7074026e0&geocode={name}&format=json'
     response = requests.get(geocoder_request)
@@ -92,30 +93,19 @@ class Route:
         map_params = {
             "apikey": apikey,
             "pt": f"{"~".join([i[2] for i in self.names_org])}~{self.address_ll},round",
-            #    "z": z
+            # "z": z
         }
 
         map_api_server = "https://static-maps.yandex.ru/v1"
         response = requests.get(map_api_server, params=map_params)
         self.img = BytesIO(response.content)
         opened_image = Image.open(self.img)
-        opened_image.save("static/img/route.png")
-        # con = sqlite3.connect("static/sqLite3/Thumbs.db")
-        # cur = con.cursor()
-        # id = cur.execute("""SELECT id FROM routes""").fetchall()
-        # print(id[-1][0])
-        # cur.execute(f"""INSERT INTO routes(id, creator_id)""").fetchall()
-        # con.commit()
-        # con.close()
-        # #opened_image.show()
-        return "static/img/route.png"
-
-        # opened_image.save("example.png")
+        return opened_image
 
 
 # address_ll = get_coords(input("Страна, Город, Улица: "))
-address_ll = get_coords("Россия Липецк Свиридова 5")
-route = Route(["Парк Атракционов", "Кафе", "Парк"], "Базовая прогулка", address_ll)
-route.create_img()
+# address_ll = get_coords("Россия Липецк Свиридова 5")
+# route = Route(["Парк Атракционов", "Кафе", "Парк"], "БАзовая прогулка", address_ll)
+# route.create_img()
 
 
