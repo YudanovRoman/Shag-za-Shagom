@@ -4,14 +4,6 @@
     --accent-color: #EAD2AC;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background-color: #073B4C;
-        --text-color: #17C3B2;
-        --accent-color: #EAD2AC;
-    }
-  }
-
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -35,6 +27,7 @@ body.light-theme {
 .themeChangeBtn {
     width: 35;
     height: 35;
+    /*transition: background-color 0.3s ease;*/
 }
 
 .light {
@@ -58,7 +51,7 @@ body.light-theme {
 }
 
 .container_bottom {
-    margin-top: 10px;
+    margin-top: 5px;
     text-align: center;
 }
 
