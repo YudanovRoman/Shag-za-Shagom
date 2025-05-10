@@ -19,7 +19,11 @@
         </p>
         <div class="menu">
             <a href="Home">Home</a>
-            <a href="Account">{{ autorization }}</a>
+            {% if autorization == "Registration" %}
+            <a href=Registration>{{ autorization }}</a>
+            {% else %}
+            <a href="Profile">{{ autorization }}</a>
+            {% endif %}
             <a href="Info">About us</a>
         </div>
 

@@ -1,14 +1,16 @@
 from flask import Flask
-from flask import render_template, request, make_response
+from flask import render_template, request, make_response, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
 import sqlite3
 from pprint import pprint
-from security import generate_hash, check_password_by_username
+from security import Security
 from http import cookies
 from datetime import time, datetime
 
+
+security = Security()
 
 class LoginForm(FlaskForm):
     email = StringField('Адрес ел. Почты', validators=[DataRequired()])
@@ -24,8 +26,8 @@ class LoginForm(FlaskForm):
         print(52)
         con = sqlite3.connect(f'static/sqLite3/{TABLE}.db')
         cur = con.cursor()
-        usernames = cur.execute('''SELECT username FROM accounts''').fetchall()
-        print(field.data)
+        usernames = [i[0] for i in cur.execute('''SELECT username FROM accounts''').fetchall()]
+        print(usernames)
         if field.data in usernames:
             print('fuck ebat')
             raise ValidationError('this username is already exists')
@@ -34,7 +36,7 @@ class LoginForm(FlaskForm):
     def validate_email(form, field):
         con = sqlite3.connect(f'static/sqLite3/{TABLE}.db')
         cur = con.cursor()
-        emails = cur.execute('''SELECT email FROM accounts''').fetchall()
+        emails = [i[0] for i in cur.execute('''SELECT email FROM accounts''').fetchall()]
         if field.data in emails:
             raise ValidationError('this email is already exists')
         con.close()
@@ -48,14 +50,26 @@ class AutoForm(FlaskForm):
     def validate_username(form, field):
         con = sqlite3.connect(f'static/sqLite3/{TABLE}.db')
         cur = con.cursor()
-        usernames = cur.execute('''SELECT username FROM accounts''').fetchall()
+        usernames = [i[0] for i in cur.execute('''SELECT username FROM accounts''').fetchall()]
         con.close()
+        print('tung tung tung sahur >:')
+        print('tung tung tung sahur >:')
+        print('tung tung tung sahur >:')
+        print('tung tung tung sahur >:')
+        print('tung tung tung sahur >:')
+        print(field.data)
+        print('tung tung tung sahur >:')
+        print('tung tung tung sahur >:')
+        print(usernames)
+        print('tung tung tung sahur >:')
+        print('tung tung tung sahur >:')
+        print('tung tung tung sahur >:')
         if field.data not in usernames:
             raise ValidationError('this username is not exists')
 
     def validate_password(form, field):
         username = form.username.data
-        if not check_password_by_username(field.data, username):
+        if not security.check_password_by_username(field.data, username):
             raise ValidationError('username or password is wrong')
 
 
@@ -78,23 +92,17 @@ def new_account(con, email, username, password):
         new_id = 1
     else:
         new_id = max_id + 1
-    hash_data = generate_hash(password, new_id)
-    cur.execute(f'INSERT INTO accounts(email,username,password_hash)'
-                f' VALUES(\'{email}\',\'{username}\',\'{hash_data}\')')
+    hash_data = security.generate_hash(password, new_id)
+    cur.execute(f'INSERT INTO accounts(id,email,username,password_hash)'
+                f' VALUES({new_id},\'{email}\',\'{username}\',\'{hash_data}\')')
     con.commit()
     return str(new_id)
 
 
-def answer_format(ans: str):
-    res = ans[ans.rfind('=') + 1:ans.rfind('"') + 1]
-    return res
-
-
 def get_account_info(con, account_id):
-    print(account_id)
     cur = con.cursor()
-    username, email = cur.execute('''SELECT username,email FROM accounts WHERE id=?''', account_id).fetchone()
-    routes_id = cur.execute('''SELECT id FROM routes WHERE creator_id=?''', account_id).fetchall()
+    username, email = cur.execute('''SELECT username,email FROM accounts WHERE id=?''', (account_id,)).fetchone()
+    routes_id = cur.execute('''SELECT id FROM routes WHERE creator_id=?''', (account_id,)).fetchall()
     res = {
         'username': username,
         'email': email,
@@ -104,12 +112,18 @@ def get_account_info(con, account_id):
     return res
 
 
+def get_account_id(con, username):
+    cur = con.cursor()
+    account_id = cur.execute('''SELECT id FROM accounts WHERE username=?''', (username,)).fetchone()[0]
+    return str(account_id)
+
+
 @app.route('/')
 @app.route('/Home')
 def title():
     account_id = request.cookies.get('account_id')
     if not account_id or account_id == '-1':
-        temp = 'Register'
+        temp = 'Registration'
     else:
         temp = 'Profile'
     res = make_response(render_template('title.html', title='Welcome', autorization=temp))
@@ -120,45 +134,66 @@ def title():
 def get_info():
     account_id = request.cookies.get('account_id')
     if not account_id or account_id == '-1':
-        temp = 'Register'
+        temp = 'Registration'
     else:
         temp = 'Profile'
     res = make_response(render_template('information.html', title='Information', autorization=temp))
     theme_master(res)
     return res
 
-@app.route('/Account', methods=['GET', 'POST'])
-def register():
-    account_id = request.cookies.get('account_id')
+@app.route('/Registration', methods=['GET', 'POST'])
+def registration():
     con = sqlite3.connect(f'static/sqLite3/{TABLE}.db')
 
-    if not account_id or account_id == '-1':
-        form = LoginForm()
-        if form.validate_on_submit():
-            res = make_response(render_template('profile.html',
-                                                title='My profile', autorization='Profile',
-                                                email=form.email, username=form.username))
-            res.set_cookie('account_id', new_account(con, form.email.data, form.username.data, form.password.data),
-                           max_age=60 * 60 * 24 * 365 * 2)
-            print(form.username)
-            con.close()
-            theme_master(res)
-            return res
-        print(0)
-        res = make_response(render_template('register.html', title='Register',
-                                            autorization='Register', form=form))
-        res.set_cookie('account_id', '-1', max_age=60 * 60 * 24 * 365 * 2)
-        theme_master(res)
+    form = LoginForm()
+    if form.validate_on_submit():
+        res = make_response(redirect("Profile"))
+        res.set_cookie('account_id', new_account(con, form.email.data, form.username.data, form.password.data),
+                       max_age=60 * 60 * 24 * 365 * 2)
         con.close()
-        return res
-    else:
-        account_data = get_account_info(con, account_id)
-        res = make_response(render_template('profile.html', title='My profile',
-                                            autorization='Profile', username=account_data['username'],
-                                            email=account_data['email'], created_routes=account_data['routes_id']))
         theme_master(res)
-        con.close()
         return res
+
+    res = make_response(render_template('registration.html', title='Registration',
+                                        autorization='Registration', form=form))
+    res.set_cookie('account_id', '-1', max_age=60 * 60 * 24 * 365 * 2)
+    theme_master(res)
+    con.close()
+    return res
+
+
+@app.route('/Profile')
+def profile():
+    account_id = request.cookies.get('account_id')
+    con = sqlite3.connect(f'static/sqLite3/{TABLE}.db')
+    account_data = get_account_info(con, account_id)
+    res = make_response(render_template('profile.html', title='My profile',
+                                        autorization='Profile', username=account_data['username'],
+                                        email=account_data['email'], created_routes=account_data['routes_id']))
+    theme_master(res)
+    con.close()
+    return res
+
+
+@app.route('/Login', methods=['GET', 'POST'])
+def login():
+    con = sqlite3.connect(f'static/sqLite3/{TABLE}.db')
+
+    form = AutoForm()
+    if form.validate_on_submit():
+        res = make_response(redirect("Profile"))
+        res.set_cookie('account_id', get_account_id(con, form.username.data), max_age=60 * 60 * 24 * 365 * 2)
+        con.close()
+        theme_master(res)
+        return res
+
+    res = make_response(render_template('login.html', title='Login',
+                                        autorization='Registration', form=form))
+    res.set_cookie('account_id', '-1', max_age=60 * 60 * 24 * 365 * 2)
+    theme_master(res)
+    con.close()
+    return res
+
 
 @app.route('/Route/<route_id>')
 def route(route_id):

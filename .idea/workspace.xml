@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="80945c9d-fedd-48d8-8b18-397a8e44e9fe" name="Changes" comment="Создал опору всей веб-инфраструктуры приложения, базы данных, поработал с CSS и JS. Для запоминания id профиля пользователя будут использованы файлы cookie. Создал первую версию формы регистрации">
+    <list default="true" id="80945c9d-fedd-48d8-8b18-397a8e44e9fe" name="Changes" comment="создал настоящую защиту паролей, сайт подправил, аккаунты работают(но есть небольшая ошибка с формой)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/base.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/base.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/css/light_theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/light_theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/sqLite3/Thumbs.db" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/register.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,12 +152,30 @@
       <option name="project" value="LOCAL" />
       <updated>1746228864473</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="создал настоящую защиту паролей, сайт подправил, аккаунты работают(но есть небольшая ошибка с формой)">
+      <option name="closed" value="true" />
+      <created>1746819870087</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1746819870087</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="2f2a5636-d8de-4f29-af45-6a69b4cfafd1" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
+        <entry key="2f2a5636-d8de-4f29-af45-6a69b4cfafd1">
+          <value>
+            <State />
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State>
@@ -173,7 +189,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/Roman" />
+                        <option value="origin/Artem_branch" />
                       </list>
                     </value>
                   </entry>
@@ -187,14 +203,15 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Создал опору всей веб-инфраструктуры приложения, базы данных, поработал с CSS и JS. Для запоминания id профиля пользователя будут использованы файлы cookie. Создал первую версию формы регистрации" />
-    <option name="LAST_COMMIT_MESSAGE" value="Создал опору всей веб-инфраструктуры приложения, базы данных, поработал с CSS и JS. Для запоминания id профиля пользователя будут использованы файлы cookie. Создал первую версию формы регистрации" />
+    <MESSAGE value="создал настоящую защиту паролей, сайт подправил, аккаунты работают(но есть небольшая ошибка с формой)" />
+    <option name="LAST_COMMIT_MESSAGE" value="создал настоящую защиту паролей, сайт подправил, аккаунты работают(но есть небольшая ошибка с формой)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/server.py</url>
-          <line>80</line>
+          <line>94</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
