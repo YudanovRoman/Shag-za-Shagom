@@ -12,6 +12,10 @@ body {
     transition: background-color 0.3s ease;
 }
 
+.btn_img {
+    margin: 10;
+}
+
 body.dark-theme {
     --background-color: #073B4C;
     --text-color: #17C3B2;
@@ -25,8 +29,10 @@ body.light-theme {
 }
 
 .themeChangeBtn {
-    width: 35;
-    height: 35;
+    width: 40px;
+    height: 40px;
+    border: none;
+
     /*transition: background-color 0.3s ease;*/
 }
 
