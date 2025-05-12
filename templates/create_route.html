@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Шаг за шагом</h1><br>
+    <div class="--bs-body-bg-rgb">
+        <form action="/Create_Route" method="post">
+            <input name="address" type="text" size="100" placeholder="Введите где будет проходить пргулка"><br>
+            <input name="route" type="text" size="100" placeholder="Введите виды развлечений которые вы хотите посетить"><br>
+            <input name="date-time" type="datetime-local" size="50" placeholder="Введите во сколько вы будете проводить прогулку"><br>
+            <p>
+                <img id="Route" src= {{ image }} alt="image">
+                <input type="submit" value="Создать маршрут">
+            </p>
+        </form>
+            Пункты маршрута
+        <ul>
+            {% for i in range(num) %}
+            <li><form action="/Create_Route" method="post"><p>
+                {{ textes[i][0] }}<br>
+                {{ textes[i][1] }}<br>
+                {{ textes[i][2] }}<br>
+            </p></form></li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+{% endblock %}

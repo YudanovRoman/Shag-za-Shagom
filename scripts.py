@@ -9,6 +9,46 @@ import math
 import sqlite3
 
 
+weekday_dict = ["пн", "вт", "ср", "чт", "пт", "сб", "вс"]
+
+
+def check_datetime(dt, weekday, timed):
+    date = False
+    time = False
+    if "ежедневно" in dt:
+        date = True
+        if "круглосуточно" in dt:
+            time = True
+        else:
+            x = dt.split(", ")[1].split("–")
+            x.append(timed)
+    else:
+        y = dt.split("; ")
+        y = [i.split(" ") for i in y]
+        for i in y:
+            if weekday_dict.index(i[0][:2]) <= weekday <= weekday_dict.index(i[0][-2:]):
+                date = True
+                if "круглосуточно" in i[1]:
+                    time = True
+                else:
+                    y = i[1].split("–")
+                    y.append(timed)
+                break
+        if date and not time:
+            for i in range(len(y)):
+                y[i] = y[i][:2]
+                if y[i][0] == "0":
+                    y[i] = y[i][1]
+                y[i] = int(y[i])
+            num1, num2, num3 = y
+            if num2 < num1:
+                num2 += 24
+            if num1 <= num3 <= num2 - 1:
+                time = True
+    if date and time:
+        return True
+    return False
+
 
 def get_coords(name):
     geocoder_request = f'http://geocode-maps.yandex.ru/1.x/?apikey=8013b162-6b42-4997-9691-77b7074026e0&geocode={name}&format=json'
@@ -41,7 +81,7 @@ def lonlat_distance(a, b):
     return distance
 
 
-def get_organization_list(text, ll, num):
+def get_organization_list(text, ll, num, weekday, time):
     search_params = {
         "apikey": "dda3ddba-c9ea-4ead-9010-f43fbc15c6e3",
         "text": text,
@@ -52,39 +92,36 @@ def get_organization_list(text, ll, num):
     organizations = requests.get("https://search-maps.yandex.ru/v1/", params=search_params).json()["features"][:10]
     list_organizations = []
     for i in range(len(organizations)):
-        data = []
         organization = organizations[i]
         org_name = organization["properties"]["CompanyMetaData"]["name"]
-        data.append(org_name)
         org_address = organization["properties"]["CompanyMetaData"]["address"]
         point = organization["geometry"]["coordinates"]
         org_point = f"{point[0]},{point[1]}"
-        data.append(
-            lonlat_distance([float(i) for i in ll.split(",")], [float(i) for i in org_point.split(",")]))
-        if "Hours" not in dict(organization["properties"]["CompanyMetaData"]).keys():
-            data.append(f"{org_point},pm2grl{num}")
-        elif "круглосуточно" in organization["properties"]["CompanyMetaData"]["Hours"]["text"].lower():
-            data.append(f"{org_point},pm2gnl{num}")
-        else:
-            data.append(f"{org_point},pm2lbl{num}")
-        data.append(org_point)
-        list_organizations.append(data)
+        if "Hours" in dict(organization["properties"]["CompanyMetaData"]).keys():
+            if check_datetime(organization["properties"]["CompanyMetaData"]["Hours"]["text"], weekday, time):
+                data = [org_name,
+                        lonlat_distance([float(i) for i in ll.split(",")], [float(i) for i in org_point.split(",")]),
+                        f"{org_point},pm2gnl{num}", org_point, organization]
+                list_organizations.append(data)
     return list_organizations
 
 
 class Route:
-    def __init__(self, type, name, ll):
+    def __init__(self, type, name, ll, weekday, time):
         self.type = type
         self.name = name
         self.names_org = []
         self.img = None
         self.address_ll = ll
+        self.weekday = weekday
+        self.time = time
         self.create_route()
+
 
     def create_route(self):
         points = self.address_ll
         for i in range(len(self.type)):
-            org = get_organization_list(self.type[i], points, i + 1)
+            org = get_organization_list(self.type[i], points, i + 1, self.weekday, self.time)
             self.names_org.append(min(org, key=lambda x: x[1]))
             points = self.names_org[-1][3]
 
@@ -92,7 +129,7 @@ class Route:
         apikey = "f3a0fe3a-b07e-4840-a1da-06f18b2ddf13"
         map_params = {
             "apikey": apikey,
-            "pt": f"{"~".join([i[2] for i in self.names_org])}~{self.address_ll},round",
+            "pt": f"{"~".join([i[2] for i in self.names_org])}",
             # "z": z
         }
 
