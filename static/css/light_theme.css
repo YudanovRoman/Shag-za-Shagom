@@ -16,6 +16,16 @@ body {
     margin: 10;
 }
 
+.route_panel {
+    display: inline;
+    position: absolute;
+    margin: 0;
+    margin-left: 40px;
+    width: 700px;
+    height: 450px;
+    overflow: auto;
+}
+
 body.dark-theme {
     --background-color: #073B4C;
     --text-color: #17C3B2;
@@ -68,7 +78,7 @@ body.light-theme {
 
 .content {
     margin: 80px;
-    margin-left: 200px;
+    margin-left: 100px;
     color: var(--text-color);
 }
 

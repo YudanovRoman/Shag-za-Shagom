@@ -198,7 +198,17 @@ def login():
 
 @app.route('/Route/<route_id>')
 def route(route_id):
-    pass
+    temp_route = Route(route_id=int(route_id))
+    route_data = temp_route.get_info()
+    account_id = request.cookies.get('account_id')
+    if not account_id or account_id == '-1':
+        temp = 'Registration'
+    else:
+        temp = 'Profile'
+    res = make_response(render_template('route_window.html', title='Route',
+                                        autorization=temp, route_id=route_id, route_name=route_data['name']))
+    theme_master(res)
+    return res
 
 
 if __name__ == '__main__':

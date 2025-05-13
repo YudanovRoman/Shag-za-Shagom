@@ -15,8 +15,8 @@ def get_coords(name):
     if response:
         json_response = response.json()
         toponym = json_response["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]
-        coodrinates = toponym["Point"]["pos"]
-        return ",".join(coodrinates.split(" "))
+        coordinates = toponym["Point"]["pos"]
+        return ",".join(coordinates.split(" "))
 
 
 # Определяем функцию, считающую расстояние между двумя точками, заданными координатами
@@ -72,14 +72,16 @@ def get_organization_list(text, ll, num):
 
 
 class Route:
-    def __init__(self, route_type=False, name=False, description=False, ll=False, creator_id=False, route_id=-1):
-        if route_type >= 0:
+    def __init__(self, route_type=None, name='', description='', ll='', creator_id=-1, route_id=-1):
+        if route_type is None:
+            route_type = []
+        self.table_name = 'data'
+        if route_id >= 0:
             self.route_id = route_id
             self.get_by_id()
             self.type = []
         else:
             self.type = route_type
-            self.table_name = 'data.db'
             self.creator_id = creator_id
             self.name = name
             self.description = description
@@ -110,6 +112,7 @@ class Route:
             #    "z": z
         }
 
+
         map_api_server = "https://static-maps.yandex.ru/v1"
         response = requests.get(map_api_server, params=map_params)
         self.img = BytesIO(response.content)
@@ -132,18 +135,25 @@ class Route:
 
 
 
-        self.names_org, self.creator_id, self.name, self.description = cur.execute(
+        self.names_org, self.creator_id, self.name, self.description = [i for i in cur.execute(
             '''SELECT places_list, creator_id, name, description FROM routes WHERE id=?''', (self.route_id,)
-        )
+        ).fetchone()]
 
         con.close()
 
+    def get_info(self):
+        return {
+            'name': self.name,
+            'description': self.description,
+            'creator_id': self.creator_id,
+            'places_list': self.names_org
+        }
 
-# address_ll = get_coords(input("Страна, Город, Улица: "))
-address_ll = get_coords("Россия Липецк Свиридова 5")
-route = Route(["Парк Атракционов", "Кафе", "Парк"], "Базовая прогулка",
-              'Лучший вариант, что-бы развеятся после школы', address_ll)
-route.create_img()
+if __name__ == 'main':
+    # address_ll = get_coords(input("Страна, Город, Улица: "))
+    address_ll = get_coords("Россия Липецк Свиридова 5")
+    route = Route(["Парк Атракционов", "Кафе", "Парк"], "Базовая прогулка",
+                  'Лучший вариант, что-бы развеятся после школы', address_ll)
 
 
 # con = sqlite3.connect("static/sqLite3/Thumbs.db")

@@ -4,11 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="80945c9d-fedd-48d8-8b18-397a8e44e9fe" name="Changes" comment="Авторизация в деле!">
+    <list default="true" id="80945c9d-fedd-48d8-8b18-397a8e44e9fe" name="Changes" comment="Класс Route обновлен, и будет использован в таком виде">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes_images/route_1.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/base.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/base.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/css/light_theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/light_theme.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/sqLite3/data.db" beforeDir="false" afterPath="$PROJECT_DIR$/static/sqLite3/data.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/registration.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/registration.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/route_window.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/route_window.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +57,9 @@
     &quot;accountId&quot;: &quot;4746d9ab-0d63-45f8-b3ab-7bb45315a3f0&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/routes.py" root0="SKIP_INSPECTION" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -59,25 +69,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.routes.executor": "Run",
-    "Python.security.executor": "Run",
-    "Python.server.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Roman",
-    "last_opened_file_path": "E:/Roma/Python/Progect",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.routes.executor&quot;: &quot;Run&quot;,
+    &quot;Python.security.executor&quot;: &quot;Run&quot;,
+    &quot;Python.server.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Roman&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/Roma/Python/Progect&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\RomaPython\Shag-za-Shagom\static\routes_images" />
+      <recent name="F:\RomaPython\Shag-za-Shagom\static\img" />
       <recent name="F:\RomaPython\Shag-za-Shagom\routes_images" />
       <recent name="F:\RomaPython\Shag-za-Shagom\static" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.routes">
+  <component name="RunManager" selected="Python.server">
     <configuration name="routes" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Shag-za-Shagom" />
       <option name="ENV_FILES" value="" />
@@ -146,8 +158,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.routes" />
         <item itemvalue="Python.server" />
+        <item itemvalue="Python.routes" />
         <item itemvalue="Python.security" />
       </list>
     </recent_temporary>
@@ -192,7 +204,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746895508688</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Класс Route обновлен, и будет использован в таком виде">
+      <option name="closed" value="true" />
+      <created>1746998191864</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1746998191864</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -221,7 +241,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/Artem_branch" />
+                        <option value="origin/Roman" />
                       </list>
                     </value>
                   </entry>
@@ -237,7 +257,8 @@
     <MESSAGE value="Создал опору всей веб-инфраструктуры приложения, базы данных, поработал с CSS и JS. Для запоминания id профиля пользователя будут использованы файлы cookie. Создал первую версию формы регистрации" />
     <MESSAGE value="создал настоящую защиту паролей, сайт подправил, аккаунты работают(но есть небольшая ошибка с формой)" />
     <MESSAGE value="Авторизация в деле!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Авторизация в деле!" />
+    <MESSAGE value="Класс Route обновлен, и будет использован в таком виде" />
+    <option name="LAST_COMMIT_MESSAGE" value="Класс Route обновлен, и будет использован в таком виде" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
