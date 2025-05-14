@@ -3,21 +3,18 @@
 {% block content %}
     <h2>Имя пользователя: {{ username }}</h2>
     <h1>Созданные маршруты</h1>
+    <br><br>
     <div class="user_routes">
         {% for item in created_routes %}
             <div class="border border-bottom border-top border-1">
-                <div class="comment">
-                    <a href="/Account/{{item['account_id']}}">{{ item['account_name'] }}</a>
+                <div class="user_route">
+                    <a href="/Route/{{item['route_id']}}">{{ item['route_name'] }}</a>
                     <br>
                     <p>
-                        {{ item['text'] }}
+                        {{ item['description'] }}
                     </p>
                 </div>
             </div>
         {% endfor %}
     </div>
-    <br><br>
-    <p>
-        <a href="/Log_out">Выйти из аккаунта</a>
-    </p>
 {% endblock %}

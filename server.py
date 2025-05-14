@@ -114,7 +114,7 @@ def new_account(con, email, username, password):
 def get_account_info(con, account_id):
     cur = con.cursor()
     username, email = cur.execute('''SELECT username,email FROM accounts WHERE id=?''', (account_id,)).fetchone()
-    routes_id = cur.execute('''SELECT id FROM routes WHERE creator_id=?''', (account_id,)).fetchall()
+    routes_id = [i[0] for i in cur.execute('''SELECT id FROM routes WHERE creator_id=?''', (account_id,)).fetchall()]
     res = {
         'username': username,
         'email': email,
@@ -194,9 +194,25 @@ def profile():
     account_id = request.cookies.get('account_id')
     con = sqlite3.connect(f'static/sqLite3/{TABLE}.db')
     account_data = get_account_info(con, account_id)
+    created_routes = []
+
+    for i in account_data['routes_id']:
+        temp_route = Route(route_id=i)
+        route_data = temp_route.get_info()
+        created_routes.append(
+            {
+                'route_name': route_data['name'],
+                'route_id': i,
+                'description': route_data['description'] if len(route_data['description']) < 750
+                else route_data['description'][:750]
+            }
+        )
+
+    pprint(account_data['routes_id'])
+
     res = make_response(render_template('profile.html', title='My profile',
                                         autorization='Profile', username=account_data['username'],
-                                        email=account_data['email'], created_routes=account_data['routes_id']))
+                                        email=account_data['email'], created_routes=created_routes))
     theme_master(res)
     con.close()
     return res
@@ -216,9 +232,22 @@ def user_window(user_id):
 
     con = sqlite3.connect(f'static/sqLite3/{TABLE}.db')
     user_account_data = get_account_info(con, user_id)
+    created_routes = []
+    for i in user_account_data['routes_id']:
+        temp_route = Route(route_id=i)
+        route_data = temp_route.get_info()
+        created_routes.append(
+            {
+                'route_name': route_data['name'],
+                'route_id': i,
+                'description': route_data['description'] if len(route_data['description']) < 750
+                else route_data['description'][:750]
+            }
+        )
+
     res = make_response(render_template('user_profile.html', title='User profile',
                                         autorization=temp, username=user_account_data['username'],
-                                        created_routes=user_account_data['routes_id']))
+                                        created_routes=created_routes))
     theme_master(res)
     con.close()
     return res
@@ -277,7 +306,7 @@ def route(route_id):
 
 @app.route('/Log_out')
 def log_out():
-    res = make_response(redirect("Profile"))
+    res = make_response(redirect("/Registration"))
     res.set_cookie('account_id', '-1')
     return res
 

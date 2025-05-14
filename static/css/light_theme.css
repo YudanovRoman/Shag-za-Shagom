@@ -47,6 +47,11 @@ body {
     overflow: auto;
 }
 
+.user_routes {
+    margin: 0;
+    padding-bottom: 0;
+}
+
 body.dark-theme {
     --background-color: #073B4C;
     --text-color: #17C3B2;
