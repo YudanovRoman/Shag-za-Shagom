@@ -1,3 +1,4 @@
+import random
 from flask import Flask
 from flask import render_template, request, make_response, redirect
 from flask_wtf import FlaskForm
@@ -7,7 +8,6 @@ import sqlite3
 from pprint import pprint
 from security import Security
 from routes import Route, get_coords
-from http import cookies
 from datetime import time, datetime
 
 
@@ -145,6 +145,28 @@ def get_account_id(con, username):
     return str(account_id)
 
 
+def random_routes(con):
+    cur = con.cursor()
+    all_routes_id = [i[0] for i in cur.execute('''SELECT id FROM routes''').fetchall()]
+    random.shuffle(all_routes_id)
+    res = []
+
+    for i in all_routes_id:
+        temp_route = Route(route_id=i)
+        route_data = temp_route.get_info()
+        res.append(
+            {
+                'route_name': route_data['name'],
+                'route_id': i,
+                'description': route_data['description'] if len(route_data['description']) < 750
+                else route_data['description'][:750] + '...'
+            }
+        )
+
+    return res
+
+
+
 @app.route('/')
 @app.route('/Home')
 def title():
@@ -153,9 +175,14 @@ def title():
         temp = 'Registration'
     else:
         temp = 'Profile'
-    res = make_response(render_template('title.html', title='Welcome', autorization=temp))
+
+    con = sqlite3.connect(f'static/sqLite3/{TABLE}.db')
+
+    res = make_response(render_template('title.html', title='Welcome', autorization=temp,
+                                        routes=random_routes(con)))
     theme_master(res)
     return res
+
 
 @app.route('/Info')
 def get_info():
@@ -167,6 +194,7 @@ def get_info():
     res = make_response(render_template('information.html', title='Information', autorization=temp))
     theme_master(res)
     return res
+
 
 @app.route('/Registration', methods=['GET', 'POST'])
 def registration():
@@ -310,7 +338,7 @@ def log_out():
     res.set_cookie('account_id', '-1')
     return res
 
-@app.route('/Create_Route', methods=['GET', 'POST'])
+'''@app.route('/Create_Route', methods=['GET', 'POST'])
 def create_route():
     account_id = request.cookies.get('account_id')
     if not account_id or account_id == '-1':
@@ -342,7 +370,7 @@ def create_route():
     res = make_response(render_template('create_route.html', title='Welcome', autorization=temp,
                                         image=f"static/routes_images/{new_id}.png", num=len(temp_route.names_org),
                                         textes=textes))
-    return res
+    return res'''
 
 
 if __name__ == '__main__':

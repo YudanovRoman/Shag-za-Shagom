@@ -2,16 +2,18 @@
 
 {% block content %}
     <h1>Шаг за шагом</h1><br>
-    <div class="--bs-body-bg-rgb">
-        <p>
-        Этот проек поможет вам спланировать прогулку
-        </p>
-        <p>
-            Здесь вы найдете друзей
-        </p>
-        <p>
-            И создадите свою летопись...
-        </p>
+    <div class="user_routes">
+        {% for item in routes %}
+            <div class="border border-bottom border-top border-1">
+                <div class="user_route">
+                    <a href="/Route/{{item['route_id']}}">{{ item['route_name'] }}</a>
+                    <br>
+                    <p>
+                        {{ item['description'] }}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
     </div>
     
 {% endblock %}
