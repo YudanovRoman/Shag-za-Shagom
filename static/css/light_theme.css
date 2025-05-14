@@ -16,6 +16,27 @@ body {
     margin: 10;
 }
 
+.creator_link {
+    margin-left: 15px;
+    x: 600px;
+}
+
+.inl {
+    display: inline;
+}
+
+.comment {
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.comment_footer {
+    position: absolute;
+    left: 740px;
+    top: 700px;
+}
+
 .route_panel {
     display: inline;
     position: absolute;

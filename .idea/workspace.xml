@@ -4,17 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="80945c9d-fedd-48d8-8b18-397a8e44e9fe" name="Changes" comment="Класс Route обновлен, и будет использован в таком виде">
+    <list default="true" id="80945c9d-fedd-48d8-8b18-397a8e44e9fe" name="Changes" comment="Класс Route доработан. Создан сайт маршрута(1 версия)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes_images/route_1.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/base.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/base.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/css/light_theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/light_theme.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/sqLite3/data.db" beforeDir="false" afterPath="$PROJECT_DIR$/static/sqLite3/data.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/registration.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/registration.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/sqLite3/security_data.db" beforeDir="false" afterPath="$PROJECT_DIR$/static/sqLite3/security_data.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/route_window.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/route_window.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -212,7 +210,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746998191864</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Класс Route доработан. Создан сайт маршрута(1 версия)">
+      <option name="closed" value="true" />
+      <created>1747136310569</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1747136310569</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -241,7 +247,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/Roman" />
+                        <option value="origin/Artem_branch" />
                       </list>
                     </value>
                   </entry>
@@ -258,14 +264,15 @@
     <MESSAGE value="создал настоящую защиту паролей, сайт подправил, аккаунты работают(но есть небольшая ошибка с формой)" />
     <MESSAGE value="Авторизация в деле!" />
     <MESSAGE value="Класс Route обновлен, и будет использован в таком виде" />
-    <option name="LAST_COMMIT_MESSAGE" value="Класс Route обновлен, и будет использован в таком виде" />
+    <MESSAGE value="Класс Route доработан. Создан сайт маршрута(1 версия)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Класс Route доработан. Создан сайт маршрута(1 версия)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/server.py</url>
-          <line>95</line>
+          <line>106</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

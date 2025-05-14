@@ -1,8 +1,8 @@
 from flask import Flask
 from flask import render_template, request, make_response, redirect
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, EqualTo, ValidationError, Length
 import sqlite3
 from pprint import pprint
 from security import Security
@@ -53,18 +53,8 @@ class AutoForm(FlaskForm):
         cur = con.cursor()
         usernames = [i[0] for i in cur.execute('''SELECT username FROM accounts''').fetchall()]
         con.close()
-        print('tung tung tung sahur >:')
-        print('tung tung tung sahur >:')
-        print('tung tung tung sahur >:')
-        print('tung tung tung sahur >:')
-        print('tung tung tung sahur >:')
         print(field.data)
-        print('tung tung tung sahur >:')
-        print('tung tung tung sahur >:')
         print(usernames)
-        print('tung tung tung sahur >:')
-        print('tung tung tung sahur >:')
-        print('tung tung tung sahur >:')
         if field.data not in usernames:
             raise ValidationError('this username is not exists')
 
@@ -73,6 +63,15 @@ class AutoForm(FlaskForm):
         if not security.check_password_by_username(field.data, username):
             raise ValidationError('username or password is wrong')
 
+
+class CommentForm(FlaskForm):
+    comment = TextAreaField(validators=[DataRequired(), Length(min=2, max=300)])
+    submit = SubmitField("Отправить")
+
+    def validate_comment(form, field):
+        account_id = request.cookies.get('account_id')
+        if account_id == '-1':
+            raise ValidationError('Войдите или зарегистрируйтесь, чтобы войти в аккаунт')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -84,6 +83,18 @@ DYNAMIC_SOLT_TABLE = 'security_data'
 def theme_master(response):
     if 'theme' not in request.cookies:
         response.set_cookie('theme', 'light', max_age=60*60*24*2)
+
+
+def add_comment(con, account_id, route_id, text):
+    cur = con.cursor()
+    max_id = cur.execute('''SELECT MAX(id) FROM coments''').fetchone()[0]
+    if max_id is None:
+        new_id = 1
+    else:
+        new_id = max_id + 1
+    cur.execute(f'INSERT INTO coments(id,text,user_id,route_id)'
+                f' VALUES(?, ?, ?, ?)', (new_id, text, account_id, route_id))
+    con.commit()
 
 
 def new_account(con, email, username, password):
@@ -111,6 +122,21 @@ def get_account_info(con, account_id):
     }
     pprint(res)
     return res
+
+
+def get_comments_by_route_id(con, route_id):
+    cur = con.cursor()
+    data = cur.execute('''SELECT text, user_id FROM coments WHERE route_id=?''', (route_id,)).fetchall()
+    usernames = [cur.execute('''SELECT username FROM accounts WHERE id=?''', (i[1],)).fetchone()[0] for i in data]
+    data = [
+        {
+            'account_name': usernames[i],
+            'account_id': data[i][1],
+            'text': data[i][0]
+        } for i in range(len(data))
+    ]
+    pprint(data)
+    return data
 
 
 def get_account_id(con, username):
@@ -176,6 +202,28 @@ def profile():
     return res
 
 
+@app.route('/Account/<user_id>')
+def user_window(user_id):
+    account_id = request.cookies.get('account_id')
+
+    if account_id == user_id:
+        return make_response(redirect('/Profile'))
+
+    if not account_id or account_id == '-1':
+        temp = 'Registration'
+    else:
+        temp = 'Profile'
+
+    con = sqlite3.connect(f'static/sqLite3/{TABLE}.db')
+    user_account_data = get_account_info(con, user_id)
+    res = make_response(render_template('user_profile.html', title='User profile',
+                                        autorization=temp, username=user_account_data['username'],
+                                        created_routes=user_account_data['routes_id']))
+    theme_master(res)
+    con.close()
+    return res
+
+
 @app.route('/Login', methods=['GET', 'POST'])
 def login():
     con = sqlite3.connect(f'static/sqLite3/{TABLE}.db')
@@ -196,8 +244,10 @@ def login():
     return res
 
 
-@app.route('/Route/<route_id>')
+@app.route('/Route/<route_id>', methods=['GET', 'POST'])
 def route(route_id):
+    form = CommentForm()
+
     temp_route = Route(route_id=int(route_id))
     route_data = temp_route.get_info()
     account_id = request.cookies.get('account_id')
@@ -205,9 +255,30 @@ def route(route_id):
         temp = 'Registration'
     else:
         temp = 'Profile'
+    con = sqlite3.connect(f'static/sqLite3/{TABLE}.db')
+
+    if form.validate_on_submit():
+        text = form.comment.data # запрос к данным формы
+        print(text)
+        add_comment(con, account_id, route_id, text)
+
+    creator_data = get_account_info(con, route_data['creator_id'])
+    comments_data = get_comments_by_route_id(con, route_id)
+    con.close()
+    pprint(route_data['places_list'])
     res = make_response(render_template('route_window.html', title='Route',
-                                        autorization=temp, route_id=route_id, route_name=route_data['name']))
+                                        autorization=temp, route_id=route_id, route_name=route_data['name'],
+                                        creator_id=route_data['creator_id'], creator_name=creator_data['username'],
+                                        comments=comments_data, description=route_data['description'],
+                                        places=route_data['places_list'], form=form))
     theme_master(res)
+    return res
+
+
+@app.route('/Log_out')
+def log_out():
+    res = make_response(redirect("Profile"))
+    res.set_cookie('account_id', '-1')
     return res
 
 

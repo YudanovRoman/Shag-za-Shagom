@@ -138,6 +138,7 @@ class Route:
         self.names_org, self.creator_id, self.name, self.description = [i for i in cur.execute(
             '''SELECT places_list, creator_id, name, description FROM routes WHERE id=?''', (self.route_id,)
         ).fetchone()]
+        self.names_org = self.names_org.split(';')
 
         con.close()
 
