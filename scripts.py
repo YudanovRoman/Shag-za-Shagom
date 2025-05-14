@@ -107,22 +107,38 @@ def get_organization_list(text, ll, num, weekday, time):
 
 
 class Route:
-    def __init__(self, type, name, ll, weekday, time):
+    def __init__(self, type, ll, weekday, time):
         self.type = type
-        self.name = name
         self.names_org = []
         self.img = None
         self.address_ll = ll
         self.weekday = weekday
         self.time = time
+        self.lists_org = []
         self.create_route()
 
 
     def create_route(self):
         points = self.address_ll
+        print(len(self.type))
         for i in range(len(self.type)):
-            org = get_organization_list(self.type[i], points, i + 1, self.weekday, self.time)
-            self.names_org.append(min(org, key=lambda x: x[1]))
+            if "Различные достопримечательности" in self.type[i]:
+                org = get_organization_list("достопримечательность", points, i + 1, self.weekday, self.time)
+                org.sort(key=lambda x: x[1])
+                n = 0
+                for k in org:
+                    if k not in self.names_org:
+                        n += 1
+                        self.names_org.append(k)
+                        if n == 3:
+                            break
+            else:
+                org = get_organization_list(self.type[i], points, i + 1, self.weekday, self.time)
+                org.sort(key=lambda x: x[1])
+                for k in org:
+                    if k[0] not in [l[0] for l in self.names_org]:
+                        self.names_org.append(k)
+                        break
             points = self.names_org[-1][3]
 
     def create_img(self):
@@ -138,11 +154,3 @@ class Route:
         self.img = BytesIO(response.content)
         opened_image = Image.open(self.img)
         return opened_image
-
-
-# address_ll = get_coords(input("Страна, Город, Улица: "))
-# address_ll = get_coords("Россия Липецк Свиридова 5")
-# route = Route(["Парк Атракционов", "Кафе", "Парк"], "БАзовая прогулка", address_ll)
-# route.create_img()
-
-

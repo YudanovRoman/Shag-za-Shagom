@@ -3,9 +3,15 @@
 {% block content %}
     <h1>Шаг за шагом</h1><br>
     <div class="--bs-body-bg-rgb">
+        <datalist id="ready-routes">
+            <option value="Парк, кафе"></option>
+            <option value="Памятник, закусочная, парк, мемориал"></option>
+            <option value="Различные достопримечательности"></option>
+        </datalist>
+
         <form action="/Create_Route" method="post">
             <input name="address" type="text" size="100" placeholder="Введите где будет проходить пргулка"><br>
-            <input name="route" type="text" size="100" placeholder="Введите виды развлечений которые вы хотите посетить"><br>
+            <input name="route" type="text" size="100" placeholder="Введите чтобы вы хотели бы посетить через запятую." list="ready-routes"><br>
             <input name="date-time" type="datetime-local" size="50" placeholder="Введите во сколько вы будете проводить прогулку"><br>
             <p>
                 <img id="Route" src= {{ image }} alt="image">
@@ -15,11 +21,11 @@
             Пункты маршрута
         <ul>
             {% for i in range(num) %}
-            <li><form action="/Create_Route" method="post"><p>
+            <li><p>
                 {{ textes[i][0] }}<br>
                 {{ textes[i][1] }}<br>
                 {{ textes[i][2] }}<br>
-            </p></form></li>
+            </p></li>
             {% endfor %}
         </ul>
 

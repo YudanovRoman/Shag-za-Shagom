@@ -86,16 +86,16 @@ def create_route():
     description = request.form["route"]
     date, time = request.form["date-time"].split("T")
     date = datetime.strptime(date, "%Y-%m-%d").date()
-    route = scripts.Route(description.split(","), "Бaзовая прогулка", address_ll, date.weekday(), time)
+    route = scripts.Route(description.split(","), address_ll, date.weekday(), time)
     textes = []
+    print(len(route.names_org))
     for i in range(len(route.names_org)):
         org = route.names_org[i]
-        print(org)
+        print(org[-1]["properties"]["description"])
         text = [f"{i + 1} {org[0]}",
 f"Адрес: {org[-1]["properties"]["description"]}",
 f"Время работы: {org[-1]["properties"]["CompanyMetaData"]["Hours"]["text"]}"]
         textes.append(text)
-    print()
     image = route.create_img()
     con = sqlite3.connect("static/sqLite3/Thumbs.db")
     cur = con.cursor()
@@ -110,7 +110,7 @@ f"Время работы: {org[-1]["properties"]["CompanyMetaData"]["Hours"]["t
     cur.execute(sqlite_insert_blob_query, data_tuple)
     con.commit()
     con.close()
-    res = make_response(render_template('create_route.html', title='Welcome', autorization=temp, image=f"static/routes/{id_sql}.png", num=3, textes=textes))
+    res = make_response(render_template('create_route.html', title='Welcome', autorization=temp, image=f"static/routes/{id_sql}.png", num=len(route.names_org), textes=textes))
     return res
 
 if __name__ == '__main__':
