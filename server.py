@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired, EqualTo, ValidationError, Length
 import sqlite3
 from pprint import pprint
 from security import Security
-from routes import Route
+from routes import Route, get_coords
 from http import cookies
 from datetime import time, datetime
 
@@ -308,6 +308,40 @@ def route(route_id):
 def log_out():
     res = make_response(redirect("/Registration"))
     res.set_cookie('account_id', '-1')
+    return res
+
+@app.route('/Create_Route', methods=['GET', 'POST'])
+def create_route():
+    account_id = request.cookies.get('account_id')
+    if not account_id or account_id == '-1':
+        temp = 'Register'
+    else:
+        temp = 'Profile'
+    address_ll = request.form["address"]
+    address_ll = get_coords(address_ll)
+    description = request.form["route"]
+    date, time = request.form["date-time"].split("T")
+    date = datetime.strptime(date, "%Y-%m-%d").date()
+    temp_route = Route(description.split(","), address_ll, date.weekday(), time)
+    textes = []
+    print(len(temp_route.names_org))
+    for i in range(len(route.names_org)):
+        org = temp_route.names_org[i]
+        print(org[-1]["properties"]["description"])
+        text = [f"{i + 1} {org[0]}",
+                f"Адрес: {org[-1]["properties"]["description"]}",
+                f"Время работы: {org[-1]["properties"]["CompanyMetaData"]["Hours"]["text"]}"]
+        textes.append(text)
+    # вот тут
+    image = temp_route.create_img()
+    con = sqlite3.connect("static/sqLite3/Thumbs.db")
+    cur = con.cursor()
+    image.save(f"static/routes_images/{new_id}.png")
+    con.commit()
+    con.close()
+    res = make_response(render_template('create_route.html', title='Welcome', autorization=temp,
+                                        image=f"static/routes_images/{new_id}.png", num=len(temp_route.names_org),
+                                        textes=textes))
     return res
 
 

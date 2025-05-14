@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="80945c9d-fedd-48d8-8b18-397a8e44e9fe" name="Changes" comment="Предфинальный коммит">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="80945c9d-fedd-48d8-8b18-397a8e44e9fe" name="Changes" comment="Почти все (осталось добавление маршрута и дом)">
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/light_theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/light_theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/sqLite3/data.db" beforeDir="false" afterPath="$PROJECT_DIR$/static/sqLite3/data.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user_profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user_profile.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,7 +218,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747217672001</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Почти все (осталось добавление маршрута и дом)">
+      <option name="closed" value="true" />
+      <created>1747219915388</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1747219915388</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -271,7 +274,8 @@
     <MESSAGE value="Класс Route обновлен, и будет использован в таком виде" />
     <MESSAGE value="Класс Route доработан. Создан сайт маршрута(1 версия)" />
     <MESSAGE value="Предфинальный коммит" />
-    <option name="LAST_COMMIT_MESSAGE" value="Предфинальный коммит" />
+    <MESSAGE value="Почти все (осталось добавление маршрута и дом)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Почти все (осталось добавление маршрута и дом)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
