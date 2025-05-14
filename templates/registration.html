@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="" method="post" novalidate>
+        <div>
+            {{ form.csrf_token }}
+        </div>
+        {% for field in form if field.name != 'csrf_token' %}
+            <div>
+                {{ field.label() }}
+                {{ field() }}
+                {% for error in field.errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </form>
+    <br>
+    <p>
+        <b>
+            Есть Аккаунт? Тогда можешь <a href="/Login">войти</a>
+        </b>
+    </p>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        <h3 class="inl">{{ route_name }}</h3>
+        <h3 class="creator_link inl">
+            <a href="/Account/{{creator_id}}">
+                {{ creator_name }}
+            </a>
+        </h3>
+    </div>
+    
+    <img src="/static/routes_images/route_{{ route_id }}.png" class="border border-4 rounded-1" id='img_border' alt="Изображение карты маршрута" width="600" height="450">
+    
+    <div class="route_panel border border-4 rounded-1">
+        {% for item in comments %}
+            <div class="border border-bottom border-top border-1">
+                <div class="comment">
+                    <a href="/Account/{{item['account_id']}}">{{ item['account_name'] }}</a>
+                    <br>
+                    <p>
+                        {{ item['text'] }}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <form class="comment_footer" action="" method="post" novalidate>
+        <div>
+            {{ form.csrf_token }}
+        </div>
+        {% for field in form if field.name != 'csrf_token' %}
+            <div>
+                {{ field() }}
+                {% for error in field.errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </form>
+    <br><br>
+    <h2>Посещаемые места:</h2><br>
+    <ol>
+        {% for item in places %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ol>
+    <br><br>
+    <p>{{ description }}</p>
+{% endblock %}
