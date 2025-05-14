@@ -1,5 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-    profile (id аккаунта в куки)
+    <h2>Имя пользователя: {{ username }}</h2>
+    <h2>Почта: {{ email }}</h2>
+    <h1>Созданные маршруты</h1>
+    <br><br>
+    <div class="user_routes">
+        {% for item in created_routes %}
+            <div class="border border-bottom border-top border-1">
+                <div class="user_route">
+                    <a href="/Route/{{item['route_id']}}">{{ item['route_name'] }}</a>
+                    <br><br>
+                    <p>
+                        {{ item['description'] }}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="border border-bottom border-top border-1">
+            <br>
+            <p>
+                <a href="/Create_route">
+                    Создать новый маршрут
+                </a>
+            </p>
+        </div>
+    </div>
+    <br><br>
+    <p>
+        <a href="/Log_out">Выйти из аккаунта</a>
+    </p>
 {% endblock %}

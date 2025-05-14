@@ -10,7 +10,8 @@
         </datalist>
 
         <form action="/Create_Route" method="post">
-            <input name="address" type="text" size="100" placeholder="Введите где будет проходить пргулка"><br>
+            <input name="name-route" type="text" size="100" placeholder="Введите название маршрута"><br>
+            <input name="address" type="text" size="100" placeholder="Введите где будет проходить прогулка"><br>
             <input name="route" type="text" size="100" placeholder="Введите чтобы вы хотели бы посетить через запятую." list="ready-routes"><br>
             <input name="date-time" type="datetime-local" size="50" placeholder="Введите во сколько вы будете проводить прогулку"><br>
             <p>
@@ -18,7 +19,6 @@
                 <input type="submit" value="Создать маршрут">
             </p>
         </form>
-            Пункты маршрута
         <ul>
             {% for i in range(num) %}
             <li><p>
